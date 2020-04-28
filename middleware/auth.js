@@ -33,6 +33,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
     console.log("user data added to the requset bar");
     next();
   } catch (err) {
+    console.log(err.message);
     return next(
       new ErrorResponse("Not Authroize to access this route --", 401)
     );
@@ -41,7 +42,11 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
 exports.authroize = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    console.log(req.user.role, "user role  in req ");
+    console.log(roles[0], "check");
+    console.log(roles[0].includes(req.user.role));
+    if (!roles[0].includes(req.user.role)) {
+      console.log("role ");
       new next(
         new ErrorResponse(
           `User role ${req.user.role} is not authroize to access this route`,

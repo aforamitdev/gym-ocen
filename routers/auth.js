@@ -1,5 +1,6 @@
 const express = require("express");
 const { register, login, getMe } = require("../controllers/auth");
+console.log("Auth test");
 const { protect, authroize } = require("../middleware/auth");
 const router = express.Router();
 
