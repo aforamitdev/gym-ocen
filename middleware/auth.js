@@ -6,7 +6,7 @@ const User = require("../models/UserModel");
 
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
-  console.log(req.headers.authorization);
+  console.log(req.headers.authorization, "token ");
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -19,11 +19,12 @@ exports.protect = asyncHandler(async (req, res, next) => {
   // make sure token is send
   if (!token) {
     return next(
-      new ErrorResponse("Not Authroize to access this route as", 401)
+      new ErrorResponse("Not Authroize to access this route as no token", 401)
     );
   }
   try {
     console.log(process.env.JWT_SECRATE);
+    console.log(token, "token logi");
     const decode = jwt.verify(token, process.env.JWT_SECRET);
     console.log(
       decode,

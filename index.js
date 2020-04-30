@@ -8,6 +8,7 @@ const authRoutes = require("./routers/auth");
 const adminRoutes = require("./routers/admin");
 const sheetRoutes = require("./routers/sheet");
 const eventRoutes = require("./routers/event");
+const clubsRoutes = require("./routers/clubs");
 dotenv.config({ path: "./config/config.env" });
 
 const cors = require("cors");
@@ -28,17 +29,18 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/sheet", sheetRoutes);
 app.use("/api/v1/event", eventRoutes);
+app.use("/api/v1/clubs", clubsRoutes);
 // erroe middle ware
 
 app.use(errorHandlers);
 
-if ((process.env.NODE_ENV = "production")) {
-  app.use(express.static("./dist"));
-  //
-  app.get(/.*/, (req, res) => {
-    res.sendFile(__dirname + "/dist/index.html");
-  });
-}
+// if ((process.env.NODE_ENV = "production")) {
+//   app.use(express.static("./dist"));
+//   //
+//   app.get(/.*/, (req, res) => {
+//     res.sendFile(__dirname + "/dist/index.html");
+//   });
+// }
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
   PORT,

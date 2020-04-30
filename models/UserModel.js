@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["player", "admin", "judge", "payment", "club"],
+    enum: ["player", "admin", "judge", "payment", "clubadmin"],
     default: "player",
   },
   password: {
@@ -57,7 +57,7 @@ UserSchema.methods.getSignedJwtToken = function () {
   console.log(process.env.JWT_SECRET);
 
   const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: "1 hr",
+    expiresIn: "20h",
   });
   return { token: token, role: this.role };
 };
