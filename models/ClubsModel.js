@@ -13,7 +13,15 @@ const ClubSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
   },
-  approved: false,
+  approved: {
+    type: Boolean,
+    default: false,
+  },
+  phone: {
+    type: String,
+    require: [true, "Please add Phone NO"],
+  },
+
   clubplayers: [
     {
       type: mongoose.Schema.Types.ObjectId,

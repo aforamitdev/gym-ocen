@@ -3,30 +3,57 @@ console.log("-----------------------");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/UserModel");
+const Clubs = require("../models/ClubsModel");
 
 // @desc Register User
 // @route GET /api/v1/auth/register
 // @access Public
 
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role, club } = req.body;
-  const user = await User.create({
-    name,
-    email,
-    password,
-    club,
-    role,
-  });
-  if (!email || !password || !role) {
-    return next(
-      new ErrorResponse("Passowrd provide an email, password and role", 404)
-    );
+  const { name, email, password, role, clubID } = req.body;
+  console.log(clubID);
+  if (clubID) {
+    const user = await User.create({
+      name,
+      email,
+      password,
+      clubID,
+      role,
+    });
+
+    if (!email || !password || !role) {
+      return next(
+        new ErrorResponse("Passowrd provide an email, password and role", 404)
+      );
+    }
+
+    const token = user.getSignedJwtToken();
+
+    // check for user
+    res
+      .status(200)
+      .json({ sucess: true, token: token.token, role: token.role });
+  } else {
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role,
+    });
+
+    if (!email || !password || !role) {
+      return next(
+        new ErrorResponse("Passowrd provide an email, password and role", 404)
+      );
+    }
+
+    const token = user.getSignedJwtToken();
+
+    // check for user
+    res
+      .status(200)
+      .json({ sucess: true, token: token.token, role: token.role });
   }
-
-  const token = user.getSignedJwtToken();
-
-  // check for user
-  res.status(200).json({ sucess: true, token: token.token, role: token.role });
 });
 
 // @desc      Login user
@@ -82,9 +109,18 @@ const sendTokenResponse = (user, statusCode, res) => {
 // @route POST /api/v1/auth/me
 // @access Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).populate("clubname");
   res.status(200).json({
     sucess: true,
     data: user,
+  });
+});
+
+exports.getClubsName = asyncHandler(async (req, res, next) => {
+  const clubs = await Clubs.find({ approved: true }).select("clubname");
+  console.log(clubs);
+  res.status(200).send({
+    status: true,
+    data: clubs,
   });
 });
