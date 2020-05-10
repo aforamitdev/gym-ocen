@@ -12,48 +12,33 @@ const Clubs = require("../models/ClubsModel");
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role, clubID } = req.body;
   console.log(clubID);
-  if (clubID) {
-    const user = await User.create({
-      name,
-      email,
-      password,
-      clubID,
-      role,
-    });
-
-    if (!email || !password || !role) {
-      return next(
-        new ErrorResponse("Passowrd provide an email, password and role", 404)
-      );
-    }
-
-    const token = user.getSignedJwtToken();
-
-    // check for user
-    res
-      .status(200)
-      .json({ sucess: true, token: token.token, role: token.role });
+  const userData = {};
+  if (!clubID) {
+    userData.name = name;
+    userData.email = email;
+    userData.password = password;
+    userData.role = role;
   } else {
-    const user = await User.create({
-      name,
-      email,
-      password,
-      role,
-    });
-
-    if (!email || !password || !role) {
-      return next(
-        new ErrorResponse("Passowrd provide an email, password and role", 404)
-      );
-    }
-
-    const token = user.getSignedJwtToken();
-
-    // check for user
-    res
-      .status(200)
-      .json({ sucess: true, token: token.token, role: token.role });
+    userData.name = name;
+    userData.email = email;
+    userData.password = password;
+    userData.role = role;
+    userData.clubID = clubID;
   }
+  console.log(userData);
+
+  const user = await User.create(userData);
+
+  if (!email || !password || !role) {
+    return next(
+      new ErrorResponse("Passowrd provide an email, password and role", 404)
+    );
+  }
+
+  const token = user.getSignedJwtToken();
+
+  // check for user
+  res.status(200).json({ sucess: true, token: token.token, role: token.role });
 });
 
 // @desc      Login user
