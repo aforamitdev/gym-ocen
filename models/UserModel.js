@@ -32,7 +32,6 @@ const UserSchema = new mongoose.Schema({
   clubID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Clubs",
-    default: "5eb14147a475872f19ccec97",
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,

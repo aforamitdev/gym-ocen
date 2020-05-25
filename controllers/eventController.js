@@ -21,3 +21,14 @@ exports.getCurrentEvents = asyncHandler(async (req, res, next) => {
     console.log(error);
   }
 });
+
+exports.getEventById = asyncHandler(async (req, res, next) => {
+  console.log(req.params);
+  try {
+    const event = await Events.findById(req.params.id).populate("levelSheets");
+    console.log(event);
+    res.status(200).json({ status: true, data: event });
+  } catch (error) {
+    console.log(error);
+  }
+});

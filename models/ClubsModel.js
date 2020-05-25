@@ -11,7 +11,8 @@ const ClubSchema = mongoose.Schema({
   },
   admin: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Users",
+    ref: "User",
+    required: true,
   },
   approved: {
     type: Boolean,
@@ -22,7 +23,7 @@ const ClubSchema = mongoose.Schema({
     require: [true, "Please add Phone NO"],
   },
 
-  clubplayers: [
+  clubPlayers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",

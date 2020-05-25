@@ -8,7 +8,7 @@ const EventSchema = new Mongoose.Schema({
   eventDate: Date,
   reportingTime: String,
   level: String,
-  levelSheets: [{ type: Mongoose.Schema.Types.ObjectId, ref: "markingsheets" }],
+  levelSheets: [{ type: Mongoose.Schema.Types.ObjectId, ref: "markingSheets" }],
   participant: [{ type: Mongoose.Schema.Types.ObjectId, ref: "users" }],
   live: String,
 });
