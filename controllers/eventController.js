@@ -23,11 +23,43 @@ exports.getCurrentEvents = asyncHandler(async (req, res, next) => {
 });
 
 exports.getEventById = asyncHandler(async (req, res, next) => {
-  console.log(req.params);
+  console.log(req.query);
+  console.log(req.params.id);
+  // console.log(`${req.query.options[0]} ${req.query.options[1]}`);
   try {
-    const event = await Events.findById(req.params.id).populate("levelSheets");
-    console.log(event);
-    res.status(200).json({ status: true, data: event });
+    if (!req.query.options) {
+      console.log("here");
+      const data = await Events.findById(req.params.id);
+      return res.status(200).json({ status: true, data: data });
+    }
+    if (req.query.options.includes("participant")) {
+      console.log("her 2");
+      const data = await await Events.findById(req.params.id).populate(
+        "participant"
+      );
+      return res.status(200).json({ status: true, data: data });
+    }
+    if (req.query.options.includes("levelSheet")) {
+      const data = await Events.findById(req.params.id).populate("levelSheet");
+
+      return res.status(200).json({ status: true, data: data });
+    }
+
+    // const event = await queryStr;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+exports.addParticepents = asyncHandler(async (req, res, next) => {
+  console.log(req.params);
+  console.log(req.body);
+  try {
+    const result = await Events.findByIdAndUpdate(
+      { _id: req.params.id },
+      { participant: req.body }
+    );
+    console.log(result);
   } catch (error) {
     console.log(error);
   }

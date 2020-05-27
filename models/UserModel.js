@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Clubs",
   },
+  scoreSheets: [{ type: mongoose.Schema.Types.ObjectId, ref: "ScoreSheet" }],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
