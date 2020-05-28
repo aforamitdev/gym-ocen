@@ -34,9 +34,12 @@ exports.getEventById = asyncHandler(async (req, res, next) => {
     }
     if (req.query.options.includes("participant")) {
       console.log("her 2");
-      const data = await await Events.findById(req.params.id).populate(
-        "participant"
-      );
+      const data = await await Events.findById(req.params.id)
+        .populate({
+          path: "participant",
+          select: "name email clubID",
+        })
+        .populate({ path: "clubparticipant", select: "_id clubname" });
       return res.status(200).json({ status: true, data: data });
     }
     if (req.query.options.includes("levelSheet")) {
@@ -57,7 +60,7 @@ exports.addParticepents = asyncHandler(async (req, res, next) => {
   try {
     const result = await Events.findByIdAndUpdate(
       { _id: req.params.id },
-      { participant: req.body }
+      { participant: req.body.particepents, clubparticipant: req.body.clubId }
     );
     console.log(result);
   } catch (error) {

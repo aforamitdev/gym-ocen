@@ -10,7 +10,8 @@ const EventSchema = new Mongoose.Schema({
   level: String,
   levelSheets: [{ type: Mongoose.Schema.Types.ObjectId, ref: "markingSheets" }],
   participant: [{ type: Mongoose.Schema.Types.ObjectId, ref: "User" }],
-  live: String,
+  clubparticipant: [{ type: Mongoose.Schema.Types.ObjectId, ref: "Clubs" }],
+  live: Boolean,
 });
 
 module.exports = Mongoose.model("Events", EventSchema);
