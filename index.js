@@ -25,14 +25,14 @@ if (process.env.NODE_ENV === "dev") {
 
 // express
 // routers
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/sheet", sheetRoutes);
-app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v2/auth", authRoutes);
+app.use("/api/v2/sheet", sheetRoutes);
+app.use("/api/v2/admin", adminRoutes);
 
 // resources
 
-app.use("/api/v1/event", eventRoutes);
-app.use("/api/v1/club", clubsRoutes);
+app.use("/api/v2/event", eventRoutes);
+app.use("/api/v2/club", clubsRoutes);
 // erroe middle ware
 
 app.use(errorHandlers);
