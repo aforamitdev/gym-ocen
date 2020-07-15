@@ -19,7 +19,7 @@ app.use(express.json());
 
 connectDB();
 
-if (process.env.NODE_ENV === "undefined") {
+if (process.env.NODE_ENV === "dev") {
   app.use(morgan("dev"));
 }
 
@@ -37,7 +37,7 @@ app.use("/api/v1/club", clubsRoutes);
 
 app.use(errorHandlers);
 
-if ((process.env.NODE_ENV = "production")) {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static("./dist"));
   //
   app.get(/.*/, (req, res) => {
