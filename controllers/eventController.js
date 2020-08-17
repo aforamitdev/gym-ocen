@@ -10,13 +10,13 @@ exports.createEvent = asyncHandler(async (req, res, next) => {
     console.log(error);
   }
 });
-
+// ! GET /event/getcurrentevents
 exports.getCurrentEvents = asyncHandler(async (req, res, next) => {
   console.log(req.body);
   try {
-    const events = await Events.find({});
+    const events = await Events.find();
     console.log(events);
-    return res.json(events);
+    return res.json({ status: 200, data: events });
   } catch (error) {
     console.log(error);
   }

@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 
 router.post("/createevent", createEvent);
-router.get("/getcurentevents", getCurrentEvents);
+router.get("/getcurrentevents", getCurrentEvents);
 router.get("/:id", getEventById);
 router.post("/:id", addParticepents);
 router.get("/event/:id", () => {
