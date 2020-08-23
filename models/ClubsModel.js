@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-
-const ClubSchema = mongoose.Schema({
+const userSchema = require("./UserModel");
+const ClubSchema = new mongoose.Schema({
   clubname: {
     type: String,
     required: [true, "Please add a name"],
@@ -8,11 +8,6 @@ const ClubSchema = mongoose.Schema({
   clubaddress: {
     type: String,
     require: [true, "Please add a address"],
-  },
-  admin: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
   },
   approved: {
     type: Boolean,
@@ -31,4 +26,4 @@ const ClubSchema = mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("Clubs", ClubSchema);
+module.exports = userSchema.discriminator("Clubs", ClubSchema);

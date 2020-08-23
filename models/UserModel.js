@@ -4,6 +4,15 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const enumCharType = {
+  PLAYER: "Player",
+  ADMIN: "Admin",
+  JUDG: "Judge",
+  PAYMENT: "Payment",
+  CLUBADMIN: "Clubadmin",
+};
+
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -21,8 +30,9 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["player", "admin", "judge", "payment", "clubadmin"],
-      default: "player",
+      required: true,
+      enum: Object.keys(enumCharType),
+      description: "User Role Selectore ",
     },
     password: {
       type: String,
@@ -35,13 +45,14 @@ const UserSchema = new mongoose.Schema(
     resetPasswordExpire: Date,
   },
   {
-    discriminatorKey: "userType",
     timestamps: {
       createdAt: "created",
       updatedAt: "updated",
     },
   }
 );
+
+UserSchema.set("discriminatorKey", "userType");
 
 // Encrypt password using bcrypt
 UserSchema.pre("save", async function (next) {

@@ -1,28 +1,21 @@
-const { composeWithMongoose } = require("graphql-compose-mongoose");
-const { SchemaComposer } = require("graphql-compose");
-const userModel = require("../../models/UserModel");
-const userSchema = new SchemaComposer();
-const userGQLGenerator = composeWithMongoose(userModel, {
-  schemaComposer: userSchema,
-});
-
+const { userTC } = require("./TypeComposers");
 exports.userQuery = {
-  userById: userGQLGenerator.getResolver("findById"),
-  userByIds: userGQLGenerator.getResolver("findByIds"),
-  userOne: userGQLGenerator.getResolver("findOne"),
-  userMany: userGQLGenerator.getResolver("findMany"),
-  userCount: userGQLGenerator.getResolver("count"),
-  userConnection: userGQLGenerator.getResolver("connection"),
-  userPagination: userGQLGenerator.getResolver("pagination"),
+  userById: userTC.getResolver("findById"),
+  userByIds: userTC.getResolver("findByIds"),
+  userOne: userTC.getResolver("findOne"),
+  userMany: userTC.getResolver("findMany"),
+  userCount: userTC.getResolver("count"),
+  userConnection: userTC.getResolver("connection"),
+  userPagination: userTC.getResolver("pagination"),
 };
 
 exports.userMutations = {
-  userCreateOne: userGQLGenerator.getResolver("createOne"),
-  userCreateMany: userGQLGenerator.getResolver("createMany"),
-  userUpdateById: userGQLGenerator.getResolver("updateById"),
-  userUpdateOne: userGQLGenerator.getResolver("updateOne"),
-  userUpdateMany: userGQLGenerator.getResolver("updateMany"),
-  userRemoveById: userGQLGenerator.getResolver("removeById"),
-  userRemoveOne: userGQLGenerator.getResolver("removeOne"),
-  userRemoveMany: userGQLGenerator.getResolver("removeMany"),
+  userCreateOne: userTC.getResolver("createOne"),
+  userCreateMany: userTC.getResolver("createMany"),
+  userUpdateById: userTC.getResolver("updateById"),
+  userUpdateOne: userTC.getResolver("updateOne"),
+  userUpdateMany: userTC.getResolver("updateMany"),
+  userRemoveById: userTC.getResolver("removeById"),
+  userRemoveOne: userTC.getResolver("removeOne"),
+  userRemoveMany: userTC.getResolver("removeMany"),
 };

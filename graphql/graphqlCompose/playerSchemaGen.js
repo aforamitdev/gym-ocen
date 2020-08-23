@@ -1,13 +1,7 @@
-const { composeWithMongoose } = require("graphql-compose-mongoose");
-const { SchemaComposer } = require("graphql-compose");
-const playerModel = require("../../models/playerModel");
-const playerSchema = new SchemaComposer();
-const playerGQLGenerator = composeWithMongoose(playerModel, {
-  schemaComposer: playerSchema,
-});
+const { playerTC } = require("./TypeComposers");
 
 exports.playerQuery = {
-  playerById: playerGQLGenerator.getResolver("findById"),
+  playerById: playerTC.getResolver("findById"),
   //   userByIds: playerGQLGenerator.getResolver("findByIds"),
   //   userOne: playerGQLGenerator.getResolver("findOne"),
   //   userMany: playerGQLGenerator.getResolver("findMany"),
@@ -17,7 +11,7 @@ exports.playerQuery = {
 };
 
 exports.playerMutations = {
-  playerCreateOne: playerGQLGenerator.getResolver("createOne"),
+  playerCreateOne: playerTC.getResolver("createOne"),
   // userCreateMany: playerGQLGenerator.getResolver("createMany"),
   // userUpdateById: playerGQLGenerator.getResolver("updateById"),
   // userUpdateOne: playerGQLGenerator.getResolver("updateOne"),

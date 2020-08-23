@@ -11,4 +11,4 @@ const ScoreSheet = new Mongoose.Schema({
   },
 });
 
-module.exports = Mongoose.model("Events", EventSchema);
+module.exports = Mongoose.model("ScoreSheets", ScoreSheet);
