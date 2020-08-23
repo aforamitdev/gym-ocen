@@ -46,6 +46,18 @@ clubTC.addFields({
   },
 });
 
+// ! player custom fields
+
+// playerTC.addFields({
+//   club: {
+//     type: clubTC,
+//     resolve: async (parent, args, context, info) => {
+//       console.log(parent);
+//       return await userModel.find({ _id: parent.clubID });
+//     },
+//   },
+// });
+
 module.exports = {
   userTC,
   eventTC,
