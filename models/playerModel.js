@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
+const userSchema = require("./UserModel");
 
-const PlayerModel = new Mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+const PlayerModel = new mongoose.Schema({
   scoreSheets: [{ type: mongoose.Schema.Types.ObjectId, ref: "ScoreSheet" }],
   clubID: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,4 +9,4 @@ const PlayerModel = new Mongoose.Schema({
   },
 });
 
-module.exports = Mongoose.model("Player", PlayerModel);
+module.exports = userSchema.discriminator("Player", PlayerModel);
