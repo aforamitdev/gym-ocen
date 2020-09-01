@@ -4,43 +4,55 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please add a name"],
+
+const enumCharType = {
+  PLAYER: "Player",
+  ADMIN: "Admin",
+  JUDG: "Judge",
+  PAYMENT: "Payment",
+  CLUBADMIN: "Clubadmin",
+};
+
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please add a name"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please add an email"],
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please add a valid email",
+      ],
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: Object.keys(enumCharType),
+      description: "User Role Selectore ",
+    },
+    password: {
+      type: String,
+      required: [true, "Please add a password"],
+      minlength: 6,
+      select: false,
+    },
+
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
-  email: {
-    type: String,
-    required: [true, "Please add an email"],
-    unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please add a valid email",
-    ],
-  },
-  role: {
-    type: String,
-    enum: ["player", "admin", "judge", "payment", "clubadmin"],
-    default: "player",
-  },
-  password: {
-    type: String,
-    required: [true, "Please add a password"],
-    minlength: 6,
-    select: false,
-  },
-  clubID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Clubs",
-  },
-  scoreSheets: [{ type: mongoose.Schema.Types.ObjectId, ref: "ScoreSheet" }],
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    timestamps: {
+      createdAt: "created",
+      updatedAt: "updated",
+    },
+  }
+);
+
+UserSchema.set("discriminatorKey", "userType");
 
 // Encrypt password using bcrypt
 UserSchema.pre("save", async function (next) {
