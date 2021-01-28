@@ -19,7 +19,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
   // make sure token is send
   if (!token) {
     return next(
-      new ErrorResponse("Not Authroize to access this route as no token", 401)
+      new ErrorResponse("Not Authorize to access this route as no token", 401)
     );
   }
   try {
@@ -36,7 +36,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
   } catch (err) {
     // console.log(err.message);
     return next(
-      new ErrorResponse("Not Authroize to access this route --", 401)
+      new ErrorResponse("Not Authorize to access this route --", 401)
     );
   }
 });
@@ -50,7 +50,7 @@ exports.authroize = (...roles) => {
       console.log("role ");
       new next(
         new ErrorResponse(
-          `User role ${req.user.role} is not authroize to access this route`,
+          `User role ${req.user.role} is not authorize to access this route`,
           401
         )
       );
