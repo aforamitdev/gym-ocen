@@ -3,15 +3,13 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("./asyncHandler");
 const ErrorResponse = require("../utils/errorResponse");
 const User = require("../models/UserModel");
+const accountModel = require("../models/accountModel");
 console.log("exexutes");
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
   // console.log(req.headers.authorization, 'token ');
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+  if (req.headers.token) {
+    token = req.headers.token;
   }
   // else if(req.cookies.token){
   //   token=req.cookies.token
@@ -26,11 +24,12 @@ exports.protect = asyncHandler(async (req, res, next) => {
     // console.log(process.env.JWT_SECRATE);
     // console.log(token, 'token logi');
     const decode = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decode);
     // console.log(
     //   decode,
     //   "-----------------------------decode----------------------------------------"
     // );
-    req.user = await User.findById(decode.id);
+    req.user = await accountModel.findById(decode.id);
     // console.log('user data added to the requset bar');
     next();
   } catch (err) {

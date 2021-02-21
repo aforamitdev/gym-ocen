@@ -1,17 +1,46 @@
 const mongoose = require("mongoose");
 
 const ClubSchema = mongoose.Schema({
-  clubname: {
+  clubName: {
     type: String,
     required: [true, "Please add a name"],
   },
-  clubaddress: {
-    type: String,
-    require: [true, "Please add a address"],
+  Address: {
+    // street: {
+    //   type: String,
+    //   require: [true, "Street is required"]
+    // },
+
+    // city: {
+    //   type: String,
+    //   require: [true, "City is required"]
+    // },
+    // state: {
+    //   type: String,
+    //   require: [true, "State is required"]
+    // },
+    // pin: {
+    //   type: Number,
+    //   require: [true, "Street is required"]
+    // },
+    // country: {
+    //   type: String,
+    //   require: [true, "Country is required"]
+    // },
+    // phone: {
+    //   type: String,
+    //   require: [true, "Phone is required"]
+    // },
+    // telePhone: {
+    //   type: String,
+    //   require: [true, "Telephone is required"]
+    // },
+    type: Object,
+    require: true
   },
   admin: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Account",
     required: true,
   },
   approved: {
@@ -20,13 +49,14 @@ const ClubSchema = mongoose.Schema({
   },
   phone: {
     type: String,
-    require: [true, "Please add Phone NO"],
   },
-
+  telePhone: {
+    type: String
+  },
   clubPlayers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: "player",
     },
   ],
 });

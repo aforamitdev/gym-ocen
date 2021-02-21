@@ -25,14 +25,33 @@ exports.registerClub = asyncHandler(async (req, res, next) => {
   }
 });
 
+// upda
+exports.updateClub = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const { phone, telePhone } = req.body;
+  let address = {
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
+    pin: req.body.pin,
+    country: req.body.country,
+  };
+  const updatedClub = await Clubs.findByIdAndUpdate(id, { Address: address, phone: phone, telePhone: telePhone }, { new: true });
+  return res.status(200).json({
+    success: true,
+    data: updatedClub,
+    message: ""
+  });
+});
+
 exports.getMyClub = asyncHandler(async (req, res, next) => {
   // console.log("getMyClub executed");
-  console.log(req.user._id, "LOGEDDDDDDD");
-  const myClub = await Clubs.findOne({ admin: req.user._id });
-  console.log(myClub);
+  const myClub = await Clubs.findOne({ admin: req.user._id }).populate("admin");
 
   res.send({ sucess: true, data: myClub });
 });
+
+
 
 exports.getAllClubs = asyncHandler(async (req, res, next) => {
   const allClub = await Clubs.find();
@@ -75,5 +94,28 @@ exports.getAllStudents = asyncHandler(async (req, res, next) => {
     res.json({ sucess: true, data: students });
   } catch (error) {
     return next(new ErrorResponse("Fail to get students for this club", 500));
+  }
+});
+
+
+exports.allClub = asyncHandler(async (req, res, next) => {
+  console.log(req.params, "params");
+  try {
+    if (req.query.onlyMeta) {
+      const clubForRegistration = await Clubs.find({ approved: true }).select("clubName");
+      return res.json({ success: true, data: clubForRegistration, message: "" });
+    }
+  } catch (error) {
+    next(error);
+  }
+
+});
+
+exports.getAllPlayers = asyncHandler(async (req, res, next) => {
+  console.log(req.params, req.query, "exex");
+  if (req.query.playersData) {
+    const clubData = await Clubs.find({ _id: req.query.id }).populate("clubPlayers").select("clubPlayers");
+    console.log(clubData);
+    return res.status(200).json({ success: true, data: clubData });
   }
 });

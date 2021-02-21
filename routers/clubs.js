@@ -7,14 +7,20 @@ const {
   getClubById,
   changeClubStatus,
   getAllStudents,
+  updateClub,
+  allClub, getAllPlayers
+
 } = require("../controllers/clubControllers");
 const eventsRouter = require("./event");
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 
+router.get("/allclub", allClub);
+router.get("/players", getAllPlayers);
 router.get("/students", getAllStudents);
-router.get("/getmyclub", protect, getMyClub);
+router.get("/me", protect, getMyClub);
 router.post("/registerclub", protect, registerClub);
-router.route("/:id").get(getClubById).patch(changeClubStatus);
-router.get("/", protect, getAllClubs);
+// router.post("/update")
+router.route("/:id").get(getClubById).patch(changeClubStatus).put(updateClub);
+// router.get("/", protect, getAllClubs);
 router.use("/events", eventsRouter);
 module.exports = router;

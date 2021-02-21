@@ -4,6 +4,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/UserModel");
 const Clubs = require("../models/ClubsModel");
+const accountModel = require("../models/accountModel");
 
 // @desc Register User
 // @route GET /api/v1/auth/register
@@ -31,7 +32,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   if (!email || !password || !role) {
     return next(
-      new ErrorResponse("Passowrd provide an email, password and role", 404)
+      new ErrorResponse("Password provide an email, password and role", 404)
     );
   }
 
@@ -53,7 +54,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user
-  const user = await User.findOne({ email }).select("+password");
+  const user = await accountModel.findOne({ email }).select("+password");
 
   if (!user) {
     return next(new ErrorResponse("Invalid credentials", 401));
@@ -81,7 +82,6 @@ const sendTokenResponse = (user, statusCode, res) => {
   if ((process.env.NODE_ENV = "production")) {
     options.secure = true;
   }
-  console.log("kijen ser");
 
   // localStorae.setItem("user", JSON.stringify(user));
   res
@@ -103,9 +103,52 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 
 exports.getClubsName = asyncHandler(async (req, res, next) => {
   const clubs = await Clubs.find({ approved: true }).select("clubname");
-  console.log(clubs);
   res.status(200).send({
     status: true,
     data: clubs,
   });
+});
+
+// @desc POST register a club
+// @route POST /api/v1/auth/registerclub
+// @access public
+exports.clubRegister = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
+  const { clubName, email, password, name } = req.body;
+
+  try {
+
+    const registeredClub = await accountModel.create({
+      clubName, email, password, role: "clubadmin", name
+    });
+
+    if (registeredClub) {
+
+      res.status(200).send({
+        data: registeredClub.getSignedJwtToken(),
+        success: true
+      });
+    }
+
+  } catch (error) {
+    next(error);
+  }
+
+  // const clubdata=await accountModel.create()
+
+});
+
+exports.registerInd = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
+  try {
+
+    const registerAccount = await accountModel.create(req.body);
+    res.status(200).json({
+      success: true,
+      data: registerAccount
+    });
+
+  } catch (error) {
+    next(error);
+  }
 });
