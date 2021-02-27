@@ -31,9 +31,9 @@ const UserSchema = new mongoose.Schema({
   },
   clubID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Clubs",
+    ref: "clubs",
   },
-  scoreSheets: [{ type: mongoose.Schema.Types.ObjectId, ref: "ScoreSheet" }],
+  // scoreSheets: [{ type: mongoose.Schema.Types.ObjectId, ref: "" }],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: {
@@ -84,4 +84,4 @@ UserSchema.methods.getResetPasswordToken = function () {
   return resetToken;
 };
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("users", UserSchema);

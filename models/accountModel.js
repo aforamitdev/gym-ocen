@@ -36,11 +36,11 @@ const AccountSchema = new mongoose.Schema({
     },
     clubId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Clubs",
+        ref: "clubs",
     },
     playerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "player",
+        ref: "players",
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -119,4 +119,4 @@ AccountSchema.methods.getResetPasswordToken = function () {
     return resetToken;
 };
 
-module.exports = mongoose.model("Account", AccountSchema);
+module.exports = mongoose.model("accounts", AccountSchema);

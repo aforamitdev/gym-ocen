@@ -1,17 +1,31 @@
 const Mongoose = require("mongoose");
-const markingSheets = new Mongoose.Schema({
-  SheetName: {
+const sheetModel = new Mongoose.Schema({
+  sheetName: {
     type: String,
-    required: true,
+    require: true
   },
   sheetLevel: {
-    type: String,
-    required: true,
+    type: Number,
+    enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    default: 10
   },
-  sheet: {
-    type: Array,
-    required: true,
+  ageLimit: {
+    type: Number
   },
+  apparatusType: {
+    type: String
+  },
+  apparatus: {
+    type: Object,
+    require: true
+  },
+  fails: [
+    {
+      type: Object,
+      require: true
+    }
+  ]
 });
 
-module.exports = Mongoose.model("markingSheets", markingSheets);
+
+module.exports = Mongoose.model("sheets", sheetModel);

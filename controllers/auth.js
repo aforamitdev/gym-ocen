@@ -64,7 +64,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
-    return next(new ErrorResponse("Invalid credentials ", 401));
+    return next(new ErrorResponse("Invalid credentials", 401));
   }
 
   sendTokenResponse(user, 200, res);
@@ -136,6 +136,21 @@ exports.clubRegister = asyncHandler(async (req, res, next) => {
 
   // const clubdata=await accountModel.create()
 
+});
+
+
+exports.adminRegister = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
+  const { email, password, name } = req.body;
+  try {
+    const registeredAdmin = await accountModel.create({
+      email, password, role: "admin", name
+
+    });
+    return res.status(200).json({ success: true, result: registeredAdmin.getSignedJwtToken() });
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 exports.registerInd = asyncHandler(async (req, res, next) => {

@@ -36,26 +36,34 @@ exports.updateClub = asyncHandler(async (req, res, next) => {
     pin: req.body.pin,
     country: req.body.country,
   };
-  const updatedClub = await Clubs.findByIdAndUpdate(id, { Address: address, phone: phone, telePhone: telePhone }, { new: true });
-  return res.status(200).json({
-    success: true,
-    data: updatedClub,
-    message: ""
-  });
+
+  try {
+
+    const updatedClub = await Clubs.findByIdAndUpdate(id, { address: address, phone: phone, telePhone: telePhone }, { new: true });
+    console.log(updatedClub, "club Updated");
+    return res.status(200).json({
+      success: true,
+      data: updatedClub,
+      message: ""
+    });
+
+  } catch (error) {
+    next(error);
+  }
 });
 
 exports.getMyClub = asyncHandler(async (req, res, next) => {
   // console.log("getMyClub executed");
   const myClub = await Clubs.findOne({ admin: req.user._id }).populate("admin");
 
-  res.send({ sucess: true, data: myClub });
+  res.send({ success: true, data: myClub });
 });
 
 
 
 exports.getAllClubs = asyncHandler(async (req, res, next) => {
   const allClub = await Clubs.find();
-  res.send({ sucess: true, data: allClub });
+  res.send({ success: true, data: allClub });
 });
 
 exports.getClubById = asyncHandler(async (req, res, next) => {
@@ -63,7 +71,7 @@ exports.getClubById = asyncHandler(async (req, res, next) => {
   console.log(req.params.id, "idididi");
   const club = await await Clubs.findById(req.params.id).populate("admin");
   console.log(club);
-  res.send({ status: true, data: club });
+  res.send({ success: true, data: club });
 });
 
 exports.changeClubStatus = asyncHandler(async (req, res, next) => {
@@ -91,7 +99,7 @@ exports.getAllStudents = asyncHandler(async (req, res, next) => {
   console.log(req.query, "query");
   try {
     const students = await User.find({ clubID: clubId, role: "player" });
-    res.json({ sucess: true, data: students });
+    res.json({ success: true, data: students });
   } catch (error) {
     return next(new ErrorResponse("Fail to get students for this club", 500));
   }
@@ -102,7 +110,7 @@ exports.allClub = asyncHandler(async (req, res, next) => {
   console.log(req.params, "params");
   try {
     if (req.query.onlyMeta) {
-      const clubForRegistration = await Clubs.find({ approved: true }).select("clubName");
+      const clubForRegistration = await Clubs.find({ approved: true });
       return res.json({ success: true, data: clubForRegistration, message: "" });
     }
   } catch (error) {
@@ -112,10 +120,13 @@ exports.allClub = asyncHandler(async (req, res, next) => {
 });
 
 exports.getAllPlayers = asyncHandler(async (req, res, next) => {
-  console.log(req.params, req.query, "exex");
-  if (req.query.playersData) {
-    const clubData = await Clubs.find({ _id: req.query.id }).populate("clubPlayers").select("clubPlayers");
-    console.log(clubData);
-    return res.status(200).json({ success: true, data: clubData });
+  const { eventId } = req.query;
+  const { clubId } = req.user;
+  try {
+    const clubPlayers = await Clubs.findById({ _id: clubId }).populate("clubPlayers");
+
+    return res.status(200).json({ success: true, result: clubPlayers });
+  } catch (error) {
+    next(error);
   }
 });

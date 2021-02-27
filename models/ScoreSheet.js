@@ -1,14 +1,14 @@
-const Mongoose = require("mongoose");
+// const Mongoose = require("mongoose");
 
-const ScoreSheet = new Mongoose.Schema({
-  player: {
-    type: Mongoose.Schema.Types.ObjectId,
-    ref: "users",
-  },
-  score: {
-    type: Array,
-    data: [],
-  },
-});
+// const ScoreSheet = new Mongoose.Schema({
+//   player: {
+//     type: Mongoose.Schema.Types.ObjectId,
+//     ref: "users",
+//   },
+//   score: {
+//     type: Array,
+//     data: [],
+//   },
+// });
 
-module.exports = Mongoose.model("Events", EventSchema);
+// module.exports = Mongoose.model("sheets", ScoreSheet);

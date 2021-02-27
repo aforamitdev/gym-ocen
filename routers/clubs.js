@@ -15,7 +15,7 @@ const eventsRouter = require("./event");
 const router = express.Router();
 
 router.get("/allclub", allClub);
-router.get("/players", getAllPlayers);
+router.get("/players", protect, getAllPlayers);
 router.get("/students", getAllStudents);
 router.get("/me", protect, getMyClub);
 router.post("/registerclub", protect, registerClub);

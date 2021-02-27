@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=producation node index.js",
-    "dev": "NODE_ENV=dev nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "run": "concurrently \"cd client && npm run serve\" \"npm run dev\""
   },
   "author": "",

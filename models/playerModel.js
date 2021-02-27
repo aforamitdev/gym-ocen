@@ -11,11 +11,11 @@ const playerSchema = mongoose.Schema({
     },
     clubId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Clubs",
+        ref: "clubs",
     },
     account: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Account",
+        ref: "accounts",
     },
     approved: {
         type: Boolean,
@@ -25,4 +25,4 @@ const playerSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model("player", playerSchema);
+module.exports = mongoose.model("players", playerSchema);
